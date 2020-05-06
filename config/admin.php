@@ -85,7 +85,7 @@ return [
     | Html title for all pages.
     |
     */
-    'title' => 'Admin',
+    'title' => env('APP_ADMIN_NAME', 'Laravel-admin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -154,7 +154,7 @@ return [
     'upload' => [
 
         // Disk in `config/filesystem.php`.
-        'disk' => 'admin',
+        'disk' => 'public',
 
         // Image and file upload path under the disk above.
         'directory' => [
@@ -396,6 +396,24 @@ return [
     |
     */
     'extensions' => [
+        'china-distpicker' => [
 
+            // 如果要关掉这个扩展，设置为false
+      //      'enable' => true,
+        ],
+        'api-tester' => [
+
+            'enable' => false,
+            // route prefix for APIs
+            'prefix' => 'api',
+
+            // auth guard for api
+            'guard'  => 'api',
+
+            // If you are not using the default user model as the authentication model, set it up
+            'user_retriever' => function ($id) {
+             //   return \App\Models\User::find($id);
+            },
+        ]
     ],
 ];
