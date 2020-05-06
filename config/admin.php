@@ -396,10 +396,21 @@ return [
     |
     */
     'extensions' => [
+        'ueditor' => [
+
+            // 如果要关掉这个扩展，设置为false
+            'enable' => true,
+
+            // 编辑器的前端配置 参考：http://fex.baidu.com/ueditor/#start-config
+            'config' => [
+                'initialFrameHeight' => 400, // 例如初始化高度
+            ],
+            // 'field_type' => '自定义名字'
+        ],
         'china-distpicker' => [
 
             // 如果要关掉这个扩展，设置为false
-      //      'enable' => true,
+            'enable' => true,
         ],
         'api-tester' => [
 
@@ -412,7 +423,7 @@ return [
 
             // If you are not using the default user model as the authentication model, set it up
             'user_retriever' => function ($id) {
-             //   return \App\Models\User::find($id);
+              // return \Encore\Admin\Admin::find($id);
             },
         ]
     ],
