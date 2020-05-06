@@ -26,9 +26,21 @@ class ContactController extends AdminController
     {
         $grid = new Grid(new Contact());
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('name', __('公司名称'));
+        $grid->column('phone', __('手机号'));
+        $grid->column('tel', __('座机号'));
+        $grid->column('email', __('邮箱'));
+        $grid->column('address', __('联系地址'));
+
+        //禁用创建按钮
+        $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+          //  $actions->disableEdit();
+            $actions->disableDelete();
+        });
 
         return $grid;
     }
@@ -44,8 +56,12 @@ class ContactController extends AdminController
         $show = new Show(Contact::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('name', __('公司名称'));
+        $show->field('phone', __('手机号'));
+        $show->field('tel', __('座机号'));
+        $show->field('email', __('邮箱'));
+        $show->field('address', __('联系地址'));
+        $show->field('weixin', __('微信二维码'));
 
         return $show;
     }
@@ -59,7 +75,12 @@ class ContactController extends AdminController
     {
         $form = new Form(new Contact());
 
-
+        $form->text('name', '公司名称')->rules('required');
+        $form->text('phone', '手机号')->rules('required');
+        $form->text('tel', '座机号')->rules('required');
+        $form->text('email', '邮箱')->rules('required|email');
+        $form->text('address', '联系地址')->rules('required');
+        $form->image('weixin', '微信二维码')->rules('required|image');
 
         return $form;
     }

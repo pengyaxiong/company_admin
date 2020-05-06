@@ -26,9 +26,27 @@ class JoinController extends AdminController
     {
         $grid = new Grid(new Join());
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('name', __('姓名'));
+        $grid->column('phone', __('联系方式'));
+        $grid->column('company', __('公司名称'));
+        $grid->column('remark', __('备注'));
+
+        //禁用创建按钮
+        $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+         //   $actions->disableView();
+             $actions->disableEdit();
+             $actions->disableDelete();
+        });
+
+        $grid->filter(function ($filter) {
+            $filter->like('name', '姓名');
+            $filter->like('phone', '联系方式');
+            $filter->like('company', '公司名称');
+            $filter->between('created_at', '发布日期')->date();
+        });
 
         return $grid;
     }
@@ -44,8 +62,11 @@ class JoinController extends AdminController
         $show = new Show(Join::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('name', __('姓名'));
+        $show->field('phone', __('联系方式'));
+        $show->field('company', __('公式名称'));
+        $show->field('remark', __('备注'));
+
 
         return $show;
     }
