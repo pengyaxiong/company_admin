@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Controllers;
+namespace App\Admin\Controllers\About;
 
 use App\Admin\Models\About\Company;
 use Encore\Admin\Controllers\AdminController;

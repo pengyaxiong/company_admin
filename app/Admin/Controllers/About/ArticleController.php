@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Controllers;
+namespace App\Admin\Controllers\About;
 
 use App\Admin\Models\About\Article;
 use Encore\Admin\Controllers\AdminController;
@@ -30,7 +30,24 @@ class ArticleController extends AdminController
         $grid->column('title', __('标题'));
         $grid->column('from', __('来源'));
         $grid->column('author', __('作者'));
-        $grid->column('created_at', __('创建时间'));
+        $grid->column('is_show','是否显示')->display(function($status){
+            $status_text = [
+                1 => '显示',
+                0 => '不显示',
+            ];
+            return $status_text[$status];
+        });
+        $grid->column('created_at', __('发布日期'));
+
+        $grid->filter(function ($filter) {
+            $filter->like('title', '标题');
+            $filter->between('created_at', '发布日期')->date();
+            $status_text = [
+                1 => '显示',
+                0 => '不显示'
+            ];
+            $filter->equal('is_show','是否显示')->select($status_text);
+        });
 
         return $grid;
     }
@@ -51,7 +68,7 @@ class ArticleController extends AdminController
         $show->field('image', __('缩略图'));
         $show->field('author', __('作者'));
         $show->field('see_num', __('阅读量'));
-        $show->field('created_at', __('创建时间'));
+        $show->field('created_at', __('发布日期'));
         $show->field('description', __('详情'));
 
         return $show;
@@ -70,7 +87,7 @@ class ArticleController extends AdminController
         $form->text('from', '来源')->rules('required');
         $form->text('author', '作者')->rules('required');
 
-        $form->datetime('created_at', '创建时间')->format('YYYY-MM-DD HH:mm:ss')->rules('required');
+        $form->datetime('created_at', '发布日期')->format('YYYY-MM-DD HH:mm:ss')->rules('required');
 
         $form->number('see_num', '阅读量')->rules('required')->default(99);
 
