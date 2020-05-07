@@ -68,6 +68,10 @@ class JoinController extends AdminController
         $show->field('remark', __('备注'));
 
 
+        $show->panel()->tools(function ($tools){
+            $tools->disableEdit();
+        });
+
         return $show;
     }
 

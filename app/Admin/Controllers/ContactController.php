@@ -42,6 +42,13 @@ class ContactController extends AdminController
             $actions->disableDelete();
         });
 
+        $grid->tools(function ($tools) {
+            // 禁用批量删除按钮
+            $tools->batch(function ($batch) {
+                $batch->disableDelete();
+            });
+        });
+
         return $grid;
     }
 
@@ -63,6 +70,8 @@ class ContactController extends AdminController
         $show->field('address', __('联系地址'));
         $show->field('weixin', __('微信二维码'));
 
+        $show->field('地图')->latlong('lat', 'lng', $height = 400, $zoom = 16);
+
         return $show;
     }
 
@@ -81,6 +90,19 @@ class ContactController extends AdminController
         $form->text('email', '邮箱')->rules('required|email');
         $form->text('address', '联系地址')->rules('required');
         $form->image('weixin', '微信二维码')->rules('required|image');
+
+        $form->latlong('lat', 'lng', '地图')->default(['lat' => 114.3679, 'lng' => 30.5214]);
+
+        //表单bottom
+        // $form->disableReset();
+        $form->disableEditingCheck();
+        $form->disableViewCheck();
+        $form->disableCreatingCheck();
+
+        $form->tools(function (Form\Tools $tools) {
+            $tools->disableDelete();
+            $tools->disableView();
+        });
 
         return $form;
     }

@@ -27,9 +27,24 @@ class CompanyController extends AdminController
         $grid = new Grid(new Company());
 
         $grid->column('id', __('Id'));
-        $grid->column('description', __('Description'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('description', __('详情'));
+
+
+        //禁用创建按钮
+        $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+//            $actions->disableEdit();
+             $actions->disableDelete();
+        });
+
+        $grid->tools(function ($tools) {
+            // 禁用批量删除按钮
+            $tools->batch(function ($batch) {
+                 $batch->disableDelete();
+            });
+        });
 
         return $grid;
     }
@@ -45,9 +60,12 @@ class CompanyController extends AdminController
         $show = new Show(Company::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('description', __('Description'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('description', __('详情'));
+
+        $show->panel()->tools(function ($tools){
+            $tools->disableDelete();
+            $tools->disableEdit();
+        });
 
         return $show;
     }
@@ -61,7 +79,18 @@ class CompanyController extends AdminController
     {
         $form = new Form(new Company());
 
-        $form->textarea('description', __('Description'));
+        $form->ueditor('description', __('详情'))->rules('required');
+
+        //表单bottom
+       // $form->disableReset();
+        $form->disableEditingCheck();
+        $form->disableViewCheck();
+        $form->disableCreatingCheck();
+
+        $form->tools(function (Form\Tools $tools) {
+            $tools->disableDelete();
+            $tools->disableView();
+        });
 
         return $form;
     }
