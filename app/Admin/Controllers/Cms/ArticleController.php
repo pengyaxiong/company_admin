@@ -32,27 +32,15 @@ class ArticleController extends AdminController
         $grid->column('title', __('标题'));
         $grid->column('author', __('作者'));
         $grid->column('from', __('来源'));
-        $grid->column('is_show', '是否显示')->display(function ($status) {
-            $status_text = [
-                1 => '显示',
-                0 => '不显示',
-            ];
-            return $status_text[$status];
-        });
-        $grid->column('is_new', '最新')->display(function ($status) {
-            $status_text = [
-                1 => '是',
-                0 => '不是'
-            ];
-            return $status_text[$status];
-        });
-        $grid->column('is_hot', '最热')->display(function ($status) {
-            $status_text = [
-                1 => '是',
-                0 => '不是'
-            ];
-            return $status_text[$status];
-        });
+        // 设置text、color、和存储值
+        $states = [
+            'on'  => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
+        ];
+        $grid->column('is_show', __('Is show'))->switch($states);
+        $grid->column('is_recommend', __('Is recommend'))->switch($states);
+        $grid->column('is_new', __('Is new'))->switch($states);
+        $grid->column('is_hot', __('Is hot'))->switch($states);
         $grid->column('sort_order', __('排序'))->sortable();
         $grid->column('created_at', __('发布日期'));
 
@@ -75,6 +63,11 @@ class ArticleController extends AdminController
                 0 => '不是'
             ];
             $filter->equal('is_new', '是否最新')->select($status_new);
+            $status_recommend = [
+                1 => '是',
+                0 => '不是'
+            ];
+            $filter->equal('is_recommend', __('Is recommend'))->select($status_recommend);
         });
 
         return $grid;
@@ -104,6 +97,7 @@ class ArticleController extends AdminController
         $show->field('is_show', __('是否显示'));
         $show->field('is_hot', __('是否热门'));
         $show->field('is_new', __('是否最新'));
+        $show->field( 'is_recommend',__('Is recommend'));
         $show->field('sort_order', __('排序'));
         $show->field('created_at', __('发布日期'));
 
@@ -136,25 +130,14 @@ class ArticleController extends AdminController
         $form->number('see_num', __('阅读量'))->default(99);
 
         $states = [
-            'on' => ['value' => 1, 'text' => '显示', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => '不显示', 'color' => 'danger'],
+            'on' => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
         ];
 
         $form->switch('is_show', '是否显示')->states($states)->default(1);
-
-        $hot = [
-            'on' => ['value' => 1, 'text' => '是', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
-        ];
-
-        $form->switch('is_hot', '是否热门')->states($hot)->default(1);
-
-        $new = [
-            'on' => ['value' => 1, 'text' => '是', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
-        ];
-
-        $form->switch('is_new', '是否最新')->states($new)->default(1);
+        $form->switch('is_hot', '是否热门')->states($states)->default(1);
+        $form->switch('is_new', '是否最新')->states($states)->default(1);
+        $form->switch('is_recommend',__('Is recommend'))->states($states)->default(1);
 
         $form->number('sort_order', '排序')->rules('required')->default(99);
 

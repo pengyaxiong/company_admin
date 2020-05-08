@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Admin\Controllers\Cms;
+namespace App\Admin\Controllers\Out;
 
-use App\Admin\Models\Cms\Information;
+use App\Admin\Models\Out\Doctor;
+use App\Admin\Models\Out\Work;
+use App\Admin\Models\Out\WorkCategory;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class InformationController extends AdminController
+class WorkController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = '今日资讯';
+    protected $title = '成功案例';
 
     /**
      * Make a grid builder.
@@ -24,9 +26,11 @@ class InformationController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Information());
+        $grid = new Grid(new Work());
 
         $grid->column('id', __('Id'))->sortable();
+        $grid->column('category.name', __('Category id'));
+        $grid->column('doctor.name', __('Doctor id'));
         $grid->column('title', __('Title'));
         $grid->column('author', __('Author'));
         $grid->column('from', __('From'));
@@ -43,7 +47,7 @@ class InformationController extends AdminController
         $grid->column('is_recommend', __('Is recommend'))->switch($states);
         $grid->column('sort_order', __('Sort order'))->sortable();
         $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'))->hide();
+        $grid->column('updated_at', __('Updated at'));
 
         $grid->filter(function ($filter) {
             $filter->like('title', __('Title'));
@@ -72,14 +76,15 @@ class InformationController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Information::findOrFail($id));
-
+        $show = new Show(Work::findOrFail($id));
 
         $show->field('id', __('Id'));
+        $show->field('category_id', __('Category id'));
+        $show->field('doctor_id', __('Doctor id'));
         $show->field('title', __('Title'));
         $show->field('author', __('Author'));
         $show->field('from', __('From'));
-        $show->field('image', __('Image'));
+        $show->field('image', __('Image'))->image();
         $show->field('description', __('Description'));
         $show->field('info', __('Info'));
         $show->field('see_num', __('See num'));
@@ -102,6 +107,7 @@ class InformationController extends AdminController
         $show->field('sort_order', __('Sort order'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
+
         return $show;
     }
 
@@ -112,25 +118,29 @@ class InformationController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Information());
+        $form = new Form(new Work());
+
+        $categories=WorkCategory::all()->toArray();
+        $select_category=array_column($categories, 'name', 'id');
+        //创建select
+        $form->select('category_id', __('Category id'))->options($select_category)->rules('required');
+
+        $doctors=Doctor::where('is_show',true)->get()->toArray();
+        $select_doctor=array_column($doctors, 'name', 'id');
+        //创建select
+        $form->select('doctor_id', __('Doctor id'))->options($select_doctor)->rules('required');
 
         $form->text('title', __('Title'))->rules('required');
         $form->text('author', __('Author'))->rules('required');
         $form->text('from', __('From'))->rules('required');
-        $form->datetime('created_at', __('Created at'))->format('YYYY-MM-DD HH:mm:ss')->rules('required');
         $form->image('image', __('Image'))->rules('required|image');
         $form->ueditor('description', __('Description'))->rules('required');
-        $form->textarea('info', __('Info'))->rules('required');
+        $form->textarea('info', __('Info'));
         $form->number('see_num', __('See num'))->default(99);
-
-        $states = [
-            'on' => ['value' => 1, 'text' => '是', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
-        ];
-
-        $form->switch('is_show', __('Is show'))->states($states)->default(1);
-        $form->switch('is_recommend', __('Is recommend'))->states($states);
+        $form->switch('is_show', __('Is show'))->default(1);
+        $form->switch('is_recommend', __('Is recommend'));
         $form->number('sort_order', __('Sort order'))->default(99);
+
         return $form;
     }
 }

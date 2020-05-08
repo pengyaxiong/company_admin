@@ -37,5 +37,36 @@ Route::group([
         $router->resource('knows', 'KnowController');
 
     });
+
+    //海外试管
+    Route::group(['prefix' => 'out', 'namespace' => 'Out', 'as' => 'out.'], function (Router $router) {
+        //名医荟萃
+        $router->resource('doctors', 'DoctorController');
+        //成功案例
+        $router->resource('works', 'WorkController');
+        $router->resource('work-categories', 'WorkCategoryController');
+        //海外医院
+        $router->resource('hospitals', 'HospitalController');
+        //试管套餐
+        $router->resource('articles', 'ArticleController');
+    });
+
+    //
+    Route::group(['prefix' => 'other', 'namespace' => 'Other', 'as' => 'other.'], function (Router $router) {
+        //生殖机构大全
+        $router->resource('organizations', 'OrganizationController');
+
+        //轮播图
+        $router->resource('banners', 'BannerController');
+        //专业领域
+        $router->resource('fields', 'FieldController');
+        //服务优势
+        $router->resource('services', 'ServiceController');
+        //文章分类
+        $router->resource('article-categories', 'ArticleCategoryController');
+        //文章列表
+        $router->resource('articles', 'ArticleController');
+
+    });
 });
 

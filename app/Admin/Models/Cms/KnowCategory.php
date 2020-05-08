@@ -32,7 +32,7 @@ class KnowCategory extends Model
 
     static function get_parents()
     {
-        return self::where('is_show', true)->where("parent_id", 0)
+        return self::where("parent_id", 0)
             ->orderBy('sort_order')->get()->toarray();
     }
 

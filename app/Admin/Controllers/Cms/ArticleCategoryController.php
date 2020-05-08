@@ -26,15 +26,14 @@ class ArticleCategoryController extends AdminController
     {
         $grid = new Grid(new ArticleCategory());
 
-        $grid->column('id', __('Id'));
+        $grid->column('id', __('Id'))->sortable();
         $grid->column('name', __('名称'));
-        $grid->column('is_show', '是否显示')->display(function ($status) {
-            $status_text = [
-                1 => '显示',
-                0 => '不显示',
-            ];
-            return $status_text[$status];
-        });
+        // 设置text、color、和存储值
+        $states = [
+            'on'  => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
+        ];
+        $grid->column('is_show', __('Is show'))->switch($states);
         $grid->column('sort_order', __('排序'))->sortable();
         $grid->filter(function ($filter) {
             $filter->like('name', '名称');

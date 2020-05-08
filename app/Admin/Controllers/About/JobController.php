@@ -28,15 +28,14 @@ class JobController extends AdminController
 
         $grid->id('ID')->sortable();
         $grid->name('职位');
-     //   $grid->responsibility('岗位职责');
-     //   $grid->requirement('岗位要求');
-        $grid->is_show('是否显示')->display(function($status){
-            $status_text = [
-                1 => '显示',
-                0 => '不显示',
-            ];
-            return $status_text[$status];
-        });
+        $grid->responsibility('岗位职责')->hide();
+        $grid->requirement('岗位要求')->hide();
+        // 设置text、color、和存储值
+        $states = [
+            'on'  => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
+        ];
+        $grid->column('is_show', __('Is show'))->switch($states);
         $grid->sort_order('排序')->sortable();
 
         $grid->actions(function ($actions) {

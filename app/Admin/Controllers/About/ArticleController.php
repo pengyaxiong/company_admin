@@ -26,27 +26,39 @@ class ArticleController extends AdminController
     {
         $grid = new Grid(new Article());
 
-        $grid->column('id', __('Id'));
-        $grid->column('title', __('标题'));
-        $grid->column('from', __('来源'));
-        $grid->column('author', __('作者'));
-        $grid->column('is_show','是否显示')->display(function($status){
-            $status_text = [
-                1 => '显示',
-                0 => '不显示',
-            ];
-            return $status_text[$status];
-        });
-        $grid->column('created_at', __('发布日期'));
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('title', __('Title'));
+        $grid->column('author', __('Author'));
+        $grid->column('from', __('From'));
+        $grid->column('image', __('Image'))->image();
+        $grid->column('description', __('Description'))->hide();
+        $grid->column('info', __('Info'))->hide();
+        $grid->column('see_num', __('See num'));
+        // 设置text、color、和存储值
+        $states = [
+            'on'  => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
+        ];
+        $grid->column('is_show', __('Is show'))->switch($states);
+        $grid->column('is_recommend', __('Is recommend'))->switch($states);
+        $grid->column('sort_order', __('Sort order'))->sortable();
+        $grid->column('created_at', __('Created at'));
+        $grid->column('updated_at', __('Updated at'))->hide();
 
         $grid->filter(function ($filter) {
-            $filter->like('title', '标题');
-            $filter->between('created_at', '发布日期')->date();
-            $status_text = [
+            $filter->like('title', __('Title'));
+            $filter->between('created_at', __('Created at'))->date();
+            $status_show = [
                 1 => '显示',
                 0 => '不显示'
             ];
-            $filter->equal('is_show','是否显示')->select($status_text);
+            $filter->equal('is_show', __('Is show'))->select($status_show);
+            $status_hot = [
+                1 => '是',
+                0 => '不是'
+            ];
+            $filter->equal('is_recommend', __('Is recommend'))->select($status_hot);
+
         });
 
         return $grid;
@@ -63,14 +75,32 @@ class ArticleController extends AdminController
         $show = new Show(Article::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('title', __('标题'));
-        $show->field('from', __('来源'));
-        $show->field('image', __('缩略图'));
-        $show->field('author', __('作者'));
-        $show->field('see_num', __('阅读量'));
-        $show->field('created_at', __('发布日期'));
-        $show->field('description', __('详情'));
-
+        $show->field('title', __('Title'));
+        $show->field('author', __('Author'));
+        $show->field('from', __('From'));
+        $show->field('image', __('Image'));
+        $show->field('description', __('Description'));
+        $show->field('info', __('Info'));
+        $show->field('see_num', __('See num'));
+        $show->field('is_show', __('Is show'))->as(function ($status) {
+            if ($status == 1) {
+                $status = '显示';
+            } else {
+                $status = '不显示';
+            }
+            return $status;
+        });
+        $show->field('is_recommend', __('Is recommend'))->as(function ($status) {
+            if ($status == 1) {
+                $status = '是';
+            } else {
+                $status = '不是';
+            }
+            return $status;
+        });
+        $show->field('sort_order', __('Sort order'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
         return $show;
     }
 
@@ -83,27 +113,23 @@ class ArticleController extends AdminController
     {
         $form = new Form(new Article());
 
-        $form->text('title', '标题')->rules('required');
-        $form->text('from', '来源')->rules('required');
-        $form->text('author', '作者')->rules('required');
-
-        $form->datetime('created_at', '发布日期')->format('YYYY-MM-DD HH:mm:ss')->rules('required');
-
-        $form->number('see_num', '阅读量')->rules('required')->default(99);
-
-        $form->image('image', '缩略图')->rules('required|image');
-
-        $form->ueditor('description', '详情')->rules('required');
+        $form->text('title', __('Title'))->rules('required');
+        $form->text('author', __('Author'))->rules('required');
+        $form->text('from', __('From'))->rules('required');
+        $form->datetime('created_at', __('Created at'))->format('YYYY-MM-DD HH:mm:ss')->rules('required');
+        $form->image('image', __('Image'))->rules('required|image');
+        $form->ueditor('description', __('Description'))->rules('required');
+        $form->textarea('info', __('Info'))->rules('required');
+        $form->number('see_num', __('See num'))->default(99);
 
         $states = [
-            'on'  => ['value' => 1, 'text' => '显示', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => '不显示', 'color' => 'danger'],
+            'on' => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
         ];
 
-        $form->switch('is_show','是否显示')->states($states)->default(1);
-
-
-        $form->number('sort_order', '排序')->rules('required')->default(99);
+        $form->switch('is_show', __('Is show'))->states($states)->default(1);
+        $form->switch('is_recommend', __('Is recommend'))->states($states);
+        $form->number('sort_order', __('Sort order'))->default(99);
 
 
         return $form;

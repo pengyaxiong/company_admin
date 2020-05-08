@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Admin\Controllers\Cms;
+namespace App\Admin\Controllers\Out;
 
-use App\Admin\Models\Cms\Information;
+use App\Admin\Models\Out\Article;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class InformationController extends AdminController
+class ArticleController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = '今日资讯';
+    protected $title = '试管套餐';
 
     /**
      * Make a grid builder.
@@ -24,7 +24,7 @@ class InformationController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Information());
+        $grid = new Grid(new Article());
 
         $grid->column('id', __('Id'))->sortable();
         $grid->column('title', __('Title'));
@@ -72,14 +72,13 @@ class InformationController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Information::findOrFail($id));
-
+        $show = new Show(Article::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('title', __('Title'));
         $show->field('author', __('Author'));
         $show->field('from', __('From'));
-        $show->field('image', __('Image'));
+        $show->field('image', __('Image'))->image();
         $show->field('description', __('Description'));
         $show->field('info', __('Info'));
         $show->field('see_num', __('See num'));
@@ -102,6 +101,7 @@ class InformationController extends AdminController
         $show->field('sort_order', __('Sort order'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
+
         return $show;
     }
 
@@ -112,7 +112,8 @@ class InformationController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Information());
+        $form = new Form(new Article());
+
 
         $form->text('title', __('Title'))->rules('required');
         $form->text('author', __('Author'))->rules('required');

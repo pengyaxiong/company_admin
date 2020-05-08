@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Widgets\Table;
+
 class KnowCategoryController extends AdminController
 {
     /**
@@ -26,16 +28,35 @@ class KnowCategoryController extends AdminController
 
         $grid = new Grid(new KnowCategory());
 
+        // 添加默认查询条件
+        $grid->model()->where('parent_id',0);
+
         $grid->column('id', __('Id'));
-        $grid->column('name', __('名称'));
-        $grid->column('is_show', '是否显示')->display(function ($status) {
-            $status_text = [
-                1 => '显示',
-                0 => '不显示',
-            ];
-            return $status_text[$status];
+
+        $grid->column('parent_id', '下级')->display(function () {
+            return '下级';
+        })->modal('下级',function ($model) {
+
+            //echo json_encode($model->children);exit();
+
+            $children = $model->children->map(function ($child) {
+                return $child->only(['id','is_show','name']);
+            });
+
+            return new Table(['ID',__('Is show'), __('名称'),'actions'], $children->toArray());
         });
-        $grid->column('sort_order', __('排序'))->sortable();
+
+        $grid->column('name', __('名称'));
+
+        // 设置text、color、和存储值
+        $states = [
+            'on'  => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
+        ];
+        $grid->column('is_show', '是否显示')->switch($states);
+
+        $grid->column('sort_order', __('Sort order'))->sortable();
+
         $grid->filter(function ($filter) {
             $filter->like('name', '名称');
             $status_text = [
@@ -77,15 +98,15 @@ class KnowCategoryController extends AdminController
         $form = new Form(new KnowCategory());
 
         $form->text('name', __('名称'));
-        $parents=KnowCategory::get_parents();
-        $parents=array_prepend($parents,['parent_id'=>0,'name'=>'顶级']);
+        $parents = KnowCategory::get_parents();
+        $parents = array_prepend($parents, ['parent_id' => 0, 'name' => '顶级']);
 
-        $host = explode('/',\Route::getFacadeRoot()->current()->uri);
-        if(!empty($host[4])&&$host[4]=='edit'){
-            $id=request()->route()->parameters()['know_category'];
+        $host = explode('/', \Route::getFacadeRoot()->current()->uri);
+        if (!empty($host[4]) && $host[4] == 'edit') {
+            $id = request()->route()->parameters()['know_category'];
 
-            foreach ($parents as $k=>$parent){
-                if (isset($parent['id']) && $parent['id']==$id){
+            foreach ($parents as $k => $parent) {
+                if (isset($parent['id']) && $parent['id'] == $id) {
                     unset($parents[$k]);
                 }
             }
