@@ -12,16 +12,17 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 //关于我们
 Route::group(['prefix' => 'about', 'namespace' => 'Api', 'as' => 'about.'], function () {
 
     //新闻资讯
     Route::get('articles', 'AboutController@articles');
+    Route::get('article/{id}', 'AboutController@article');
     //公司简介
     Route::get('company', 'AboutController@company');
     //加盟代理
@@ -86,6 +87,7 @@ Route::group(['prefix' => 'out', 'namespace' => 'Api', 'as' => 'out.'], function
 Route::group(['prefix' => 'other', 'namespace' => 'Api', 'as' => 'other.'], function () {
     //生殖机构大全
     Route::get('organizations', 'OtherController@organizations');
+
     Route::get('organization/{id}', 'OtherController@organization');
     //轮播图
     Route::get('banners', 'OtherController@banners');
@@ -100,3 +102,14 @@ Route::group(['prefix' => 'other', 'namespace' => 'Api', 'as' => 'other.'], func
     //文章详情
     Route::get('article/{id}', 'OtherController@article');
 });
+
+//公共方法
+Route::group(['prefix' => 'common', 'namespace' => 'Api', 'as' => 'common.'], function () {
+
+    //全局搜索
+    Route::post('search', 'CommonController@search');
+    //热门搜索
+    Route::get('hot-search', 'CommonController@hot_search');
+
+});
+

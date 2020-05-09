@@ -126,6 +126,10 @@ class OtherController extends Controller
     public function article($id)
     {
         $article = Article::with('category')->find($id);
+
+        $article['prev_data']=Article::where('sort_order','<',$article->sort_order)->first();
+        $article['next_data']=Article::where('sort_order','>',$article->sort_order)->first();
+
         return $this->object($article);
     }
 }

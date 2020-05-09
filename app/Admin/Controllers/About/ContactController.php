@@ -68,7 +68,8 @@ class ContactController extends AdminController
         $show->field('tel', __('座机号'));
         $show->field('email', __('邮箱'));
         $show->field('address', __('联系地址'));
-        $show->field('weixin', __('微信二维码'));
+        $show->field('bweixin', __('华孕宝微信二维码'));
+        $show->field('tweixin', __('华孕堂微信二维码'));
 
         $show->field('地图')->latlong('lat', 'lng', $height = 400, $zoom = 16);
 
@@ -89,7 +90,9 @@ class ContactController extends AdminController
         $form->text('tel', '座机号')->rules('required');
         $form->text('email', '邮箱')->rules('required|email');
         $form->text('address', '联系地址')->rules('required');
-        $form->image('weixin', '微信二维码')->rules('required|image');
+        $form->image('bweixin', '华孕宝微信二维码')->rules('required|image');
+        $form->image('tweixin', '华孕堂微信二维码')->rules('required|image');
+        $form->text('url', '华孕堂网址')->rules('required');
 
         $form->latlong('lat', 'lng', '地图')->default(['lat' => 114.3679, 'lng' => 30.5214]);
 

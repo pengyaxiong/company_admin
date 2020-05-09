@@ -50,6 +50,16 @@ class AboutController extends Controller
         return $this->object($articles);
     }
 
+    public function article($id)
+    {
+        $article = Article::find($id);
+
+        $article['prev_data']=Article::where('sort_order','<',$article->sort_order)->first();
+        $article['next_data']=Article::where('sort_order','>',$article->sort_order)->first();
+
+        return $this->object($article);
+    }
+
     //人才招聘
     public function job(Request $request)
     {

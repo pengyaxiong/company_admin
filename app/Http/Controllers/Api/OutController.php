@@ -127,7 +127,8 @@ class OutController extends Controller
     public function work($id)
     {
         $work = Work::with(['category', 'doctor'])->find($id);
-
+        $work['prev_data']=Work::where('sort_order','<',$work->sort_order)->first();
+        $work['next_data']=Work::where('sort_order','>',$work->sort_order)->first();
         return $this->object($work);
     }
 

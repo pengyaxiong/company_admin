@@ -51,6 +51,10 @@ class CmsController extends Controller
     public function information($id)
     {
         $information = Information::find($id);
+
+        $information['prev_data']=Information::where('sort_order','<',$information->sort_order)->first();
+        $information['next_data']=Information::where('sort_order','>',$information->sort_order)->first();
+
         return $this->object($information);
     }
 
@@ -129,6 +133,8 @@ class CmsController extends Controller
     public function article($id)
     {
         $article = Article::find($id);
+        $article['prev_data']=Article::where('sort_order','<',$article->sort_order)->first();
+        $article['next_data']=Article::where('sort_order','>',$article->sort_order)->first();
         return $this->object($article);
     }
 
@@ -212,6 +218,8 @@ class CmsController extends Controller
     public function know($id)
     {
         $know = Know::find($id);
+        $know['prev_data']=Know::where('sort_order','<',$know->sort_order)->first();
+        $know['next_data']=Know::where('sort_order','>',$know->sort_order)->first();
         return $this->object($know);
     }
 }
