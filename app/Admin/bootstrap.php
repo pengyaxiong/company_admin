@@ -23,3 +23,18 @@ use Encore\Admin\Form;
 Encore\Admin\Form::forget(['map', 'editor']);
 
 Form::extend('ueditor', uEditor::class);
+
+
+//Form::init(function (Form $form) {
+//
+//    $form->disableEditingCheck();
+//
+//    $form->disableCreatingCheck();
+//
+//    $form->disableViewCheck();
+//
+//    $form->tools(function (Form\Tools $tools) {
+//        $tools->disableDelete();
+//        $tools->disableView();
+//    });
+//});

@@ -15,7 +15,7 @@ class KnowCategory extends Model
 
     public function knows()
     {
-        return $this->hasMany(Know::class);
+        return $this->hasMany(Know::class,'category_id');
     }
 
 

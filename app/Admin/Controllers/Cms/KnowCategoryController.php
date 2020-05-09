@@ -43,8 +43,18 @@ class KnowCategoryController extends AdminController
                 return $child->only(['id','is_show','name']);
             });
 
-            return new Table(['ID',__('Is show'), __('名称'),'actions'], $children->toArray());
+            $array=$children->toArray();
+            foreach ($array as $k=>$v){
+                $url=route('cms.know-categories.edit',$v['id']);
+                $array[$k]['edit']='<div class="btn">
+              <a class="btn btn-sm btn-default pull-right" target="_blank" href="'.$url.'" rel="external" >
+              <i class="fa fa-edit"></i> 编辑</a>
+                 </div>';
+            }
+            
+            return new Table(['ID',__('Is show'), __('名称'),'操作'], $array);
         });
+
 
         $grid->column('name', __('名称'));
 
