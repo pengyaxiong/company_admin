@@ -24,10 +24,14 @@ class ContactController extends AdminController
      */
     protected function grid()
     {
+
         $grid = new Grid(new Contact());
 
         $grid->column('id', __('Id'))->sortable();
-        $grid->column('name', __('公司名称'));
+        $grid->column('name', __('公司名称'))->display(function () {
+            return "<a href=".$this->host." target='_blank'>$this->name</a>";
+        });
+        $grid->column('host', __('Host'))->link();
         $grid->column('phone', __('手机号'));
         $grid->column('tel', __('座机号'));
         $grid->column('email', __('邮箱'));
@@ -64,6 +68,7 @@ class ContactController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('公司名称'));
+        $show->field('host', __('Host'));
         $show->field('phone', __('手机号'));
         $show->field('tel', __('座机号'));
         $show->field('email', __('邮箱'));
@@ -86,6 +91,7 @@ class ContactController extends AdminController
         $form = new Form(new Contact());
 
         $form->text('name', '公司名称')->rules('required');
+        $form->url('host', __('Host'))->rules('required');
         $form->text('phone', '手机号')->rules('required');
         $form->text('tel', '座机号')->rules('required');
         $form->text('email', '邮箱')->rules('required|email');

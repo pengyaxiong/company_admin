@@ -55,6 +55,7 @@ Route::group(['prefix' => 'cms', 'namespace' => 'Api', 'as' => 'cms.'], function
     Route::get('knows', 'CmsController@knows');
     //知识百科文章详情
     Route::get('know/{id}', 'CmsController@know');
+
 });
 
 
@@ -111,5 +112,7 @@ Route::group(['prefix' => 'common', 'namespace' => 'Api', 'as' => 'common.'], fu
     //热门搜索
     Route::get('hot-search', 'CommonController@hot_search');
 
+    //广告管理
+    Route::get('ads', 'CommonController@ads');
 });
 

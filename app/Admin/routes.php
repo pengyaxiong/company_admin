@@ -36,6 +36,9 @@ Route::group([
         //知识百科文章
         $router->resource('knows', 'KnowController');
 
+        //广告管理
+        $router->resource('ads', 'AdsController');
+
     });
 
     //海外试管
