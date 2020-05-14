@@ -25,8 +25,7 @@ Route::group([
 
     //助孕小课堂
     Route::group(['prefix' => 'cms', 'namespace' => 'Cms', 'as' => 'cms.'], function (Router $router) {
-        //今日资讯
-        $router->resource('informations', 'InformationController');
+
         //试管专题栏目
         $router->resource('article-categories', 'ArticleCategoryController');
         //试管专题文章

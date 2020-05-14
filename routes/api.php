@@ -37,11 +37,6 @@ Route::group(['prefix' => 'about', 'namespace' => 'Api', 'as' => 'about.'], func
 //助孕小课堂
 Route::group(['prefix' => 'cms', 'namespace' => 'Api', 'as' => 'cms.'], function () {
 
-    //今日资讯
-    Route::get('informations', 'CmsController@informations');
-    //今日资讯详情
-    Route::get('information/{id}', 'CmsController@information');
-
     //试管专题栏目
     Route::get('article-categories', 'CmsController@article_categories');
     //试管专题文章

@@ -34,7 +34,7 @@ class ArticleCategoryController extends AdminController
             'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
         ];
         $grid->column('is_show', __('Is show'))->switch($states);
-        $grid->column('sort_order', __('排序'))->sortable();
+        $grid->column('sort_order', __('排序'))->sortable()->editable();
         $grid->filter(function ($filter) {
             $filter->like('name', '名称');
             $status_text = [
@@ -74,7 +74,7 @@ class ArticleCategoryController extends AdminController
     {
         $form = new Form(new ArticleCategory());
 
-        $form->text('name', __('名称'));
+        $form->text('name', __('名称'))->rules('required');
         $states = [
             'on' => ['value' => 1, 'text' => '显示', 'color' => 'success'],
             'off' => ['value' => 0, 'text' => '不显示', 'color' => 'danger'],

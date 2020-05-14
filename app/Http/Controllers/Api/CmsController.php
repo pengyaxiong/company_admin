@@ -12,53 +12,6 @@ use App\Http\Controllers\Controller;
 
 class CmsController extends Controller
 {
-    //今日资讯
-    public function informations(Request $request)
-    {
-        //多条件查找
-        $where = function ($query) use ($request) {
-
-            if ($request->has('is_recommend') and $request->is_recommend != '') {
-                $query->where('is_recommend', true);
-            }
-
-            if ($request->has('title') and $request->title != '') {
-                $search = "%" . $request->title . "%";
-                $query->where('title', 'like', $search);
-            }
-
-            if ($request->has('created_at') and $request->created_at != '') {
-                $time = explode(" ~ ", $request->input('created_at'));
-                $start = $time[0] . ' 00:00:00';
-                $end = $time[1] . ' 23:59:59';
-                $query->whereBetween('created_at', [$start, $end]);
-            }
-            $query->where('is_show', true);
-        };
-        $informations = Information::where($where)->orderby('sort_order', 'asc')->paginate($request->total);
-
-        $page = isset($page) ? $request['page'] : 1;
-        $informations = $informations->appends(array(
-            'page' => $page,
-            'title' => $request['title'],
-            'created_at' => $request['created_at'],
-        ));
-
-        return $this->object($informations);
-    }
-
-    //今日资讯详情
-    public function information($id)
-    {
-        $information = Information::find($id);
-
-        $information['prev_data']=Information::where('sort_order','<',$information->sort_order)->first();
-        $information['next_data']=Information::where('sort_order','>',$information->sort_order)->first();
-
-        return $this->object($information);
-    }
-
-
     //试管专题栏目
     public function article_categories(Request $request)
     {
@@ -103,6 +56,10 @@ class CmsController extends Controller
 
             if ($request->has('is_recommend')) {
                 $query->where('is_recommend', $request->is_recommend);
+            }
+
+            if ($request->has('is_today')) {
+                $query->where('is_today', $request->is_today);
             }
 
             if ($request->has('created_at') and $request->created_at != '') {

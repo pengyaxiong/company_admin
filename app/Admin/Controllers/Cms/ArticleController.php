@@ -41,6 +41,7 @@ class ArticleController extends AdminController
         $grid->column('is_recommend', __('Is recommend'))->switch($states);
         $grid->column('is_new', __('Is new'))->switch($states);
         $grid->column('is_hot', __('Is hot'))->switch($states);
+        $grid->column('is_today', __('是否今日'))->switch($states);
         $grid->column('sort_order', __('排序'))->sortable();
         $grid->column('created_at', __('发布日期'));
 
@@ -68,6 +69,13 @@ class ArticleController extends AdminController
                 0 => '不是'
             ];
             $filter->equal('is_recommend', __('Is recommend'))->select($status_recommend);
+
+            $status_today = [
+                1 => '是',
+                0 => '不是'
+            ];
+            $filter->equal('is_today', '是否今日')->select($status_today);
+
         });
 
         return $grid;
@@ -97,6 +105,7 @@ class ArticleController extends AdminController
         $show->field('is_show', __('是否显示'));
         $show->field('is_hot', __('是否热门'));
         $show->field('is_new', __('是否最新'));
+        $show->field('is_today', __('是否今日'));
         $show->field( 'is_recommend',__('Is recommend'));
         $show->field('sort_order', __('排序'));
         $show->field('created_at', __('发布日期'));
@@ -123,6 +132,7 @@ class ArticleController extends AdminController
         $form->text('title', __('标题'))->rules('required');
         $form->text('author', __('作者'))->rules('required');
         $form->text('from', __('来源'))->rules('required');
+        $form->datetime('created_at', __('Created at'))->format('YYYY-MM-DD HH:mm:ss');
         $form->image('image', __('缩略图'))->rules('required|image');
         $form->ueditor('description', '详情')->rules('required');
         $form->textarea('info', __('简介'));
@@ -135,6 +145,7 @@ class ArticleController extends AdminController
         ];
 
         $form->switch('is_show', '是否显示')->states($states)->default(1);
+        $form->switch('is_today', '是否今日')->states($states)->default(1);
         $form->switch('is_hot', '是否热门')->states($states)->default(1);
         $form->switch('is_new', '是否最新')->states($states)->default(1);
         $form->switch('is_recommend',__('Is recommend'))->states($states)->default(1);

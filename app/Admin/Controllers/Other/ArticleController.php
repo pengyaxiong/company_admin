@@ -125,6 +125,7 @@ class ArticleController extends AdminController
         $form->text('title', __('Title'))->rules('required');
         $form->text('author', __('Author'))->rules('required');
         $form->text('from', __('From'))->rules('required');
+        $form->datetime('created_at', __('Created at'))->format('YYYY-MM-DD HH:mm:ss');
         $form->image('image', __('Image'))->rules('required|image');
         $form->ueditor('description', __('Description'))->rules('required');
         $form->textarea('info', __('Info'));

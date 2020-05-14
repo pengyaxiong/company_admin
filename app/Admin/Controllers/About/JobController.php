@@ -93,6 +93,8 @@ class JobController extends AdminController
         //百度编辑器
         $form->ueditor('requirement', '岗位要求')->rules('required');
 
+        $form->datetime('created_at', __('Created at'))->format('YYYY-MM-DD HH:mm:ss');
+
         $states = [
             'on'  => ['value' => 1, 'text' => '显示', 'color' => 'success'],
             'off' => ['value' => 0, 'text' => '不显示', 'color' => 'danger'],

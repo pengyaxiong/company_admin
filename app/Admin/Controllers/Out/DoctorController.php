@@ -79,7 +79,8 @@ class DoctorController extends AdminController
         $show->field('name', __('Name'));
         $show->field('job', __('Job'));
         $show->field('hospital.name', __('Hospital id'));
-        $show->field('image', __('Image'));
+        $show->field('image', __('Image'))->image();
+        $show->field('banner', __('Banner'))->image();
         $show->field('type', __('Type'))->as(function ($status) {
 
             return json_encode($status);
@@ -126,7 +127,8 @@ class DoctorController extends AdminController
         //创建select
         $form->select('hospital_id', __('Hospital id'))->options($select_hospital)->rules('required');
 
-        $form->image('image', __('Image'))->rules('required');
+        $form->image('image', __('Image'))->rules('required|image');
+        $form->image('banner', __('Banner'))->rules('required|image');
 
         $form->table('type', __('Type'), function ($table) {
             $table->text('name',__('Type'));
