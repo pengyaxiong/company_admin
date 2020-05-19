@@ -28,10 +28,9 @@ class CommonController extends Controller
         return $this->null();
     }
 
-
     public function hot_search()
     {
-
+        $search_keywords=[];
         $keys = DB::table('cache')->orderBy('num', 'desc')->limit(16)->pluck('key')->toArray();
         if (!empty($keys)) {
             foreach ($keys as $k => $key) {
