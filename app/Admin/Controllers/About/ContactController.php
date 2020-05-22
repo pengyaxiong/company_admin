@@ -96,6 +96,7 @@ class ContactController extends AdminController
         $form->text('tel', '座机号')->rules('required');
         $form->text('email', '邮箱')->rules('required|email');
         $form->text('address', '联系地址')->rules('required');
+        $form->text('copyright', __('版权信息'))->rules('required');
         $form->image('bweixin', '华孕宝微信二维码')->rules('required|image');
         $form->image('tweixin', '华孕堂微信二维码')->rules('required|image');
         $form->text('url', '华孕堂网址')->rules('required');

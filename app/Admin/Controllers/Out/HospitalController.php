@@ -36,10 +36,11 @@ class HospitalController extends AdminController
         $grid->column('info', __('Info'));
         // 设置text、color、和存储值
         $states = [
-            'on'  => ['value' => 1, 'text' => '是', 'color' => 'success'],
+            'on' => ['value' => 1, 'text' => '是', 'color' => 'success'],
             'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
         ];
         $grid->column('is_show', __('Is show'))->switch($states);
+        $grid->column('is_recommend', __('Is recommend'))->switch($states);
         $grid->column('sort_order', __('Sort order'))->sortable();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
@@ -111,11 +112,12 @@ class HospitalController extends AdminController
         $form->text('address', __('Address'))->rules('required');
         $form->mobile('tel', __('Tel'))->rules('required');
         $form->table('type', __('Type'), function ($table) {
-            $table->text('name',__('Type'));
+            $table->text('name', __('Type'));
         })->rules('required');
 
         $form->textarea('info', __('Info'))->rules('required');
         $form->switch('is_show', __('Is show'))->default(1);
+        $form->switch('is_recommend', __('Is recommend'));
         $form->number('sort_order', __('Sort order'))->default(99);
 
         return $form;

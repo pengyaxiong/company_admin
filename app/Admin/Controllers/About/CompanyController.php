@@ -79,7 +79,10 @@ class CompanyController extends AdminController
     {
         $form = new Form(new Company());
 
+        $form->image('image', __('横幅'))->rules('required|image');
+
         $form->ueditor('description', __('详情'))->rules('required');
+
 
         //表单bottom
        // $form->disableReset();

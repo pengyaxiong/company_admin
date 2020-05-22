@@ -36,7 +36,7 @@ class JobController extends AdminController
             'off' => ['value' => 0, 'text' => '否', 'color' => 'danger'],
         ];
         $grid->column('is_show', __('Is show'))->switch($states);
-        $grid->sort_order('排序')->sortable();
+        $grid->sort_order('排序')->sortable()->editable();
 
         $grid->actions(function ($actions) {
             $actions->disableView();

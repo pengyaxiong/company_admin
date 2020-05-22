@@ -41,6 +41,7 @@ class ArticleController extends AdminController
         ];
         $grid->column('is_show', __('Is show'))->switch($states);
         $grid->column('is_recommend', __('Is recommend'))->switch($states);
+        $grid->column('is_hot', __('Is hot'))->switch($states);
         $grid->column('sort_order', __('Sort order'))->sortable();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'))->hide();
@@ -58,6 +59,9 @@ class ArticleController extends AdminController
                 0 => '不是'
             ];
             $filter->equal('is_recommend', __('Is recommend'))->select($status_hot);
+
+            $filter->equal('is_hot', '是否热门')->select($status_hot);
+
 
         });
 
@@ -131,6 +135,7 @@ class ArticleController extends AdminController
 
         $form->switch('is_show', __('Is show'))->states($states)->default(1);
         $form->switch('is_recommend', __('Is recommend'))->states($states);
+        $form->switch('is_hot', '是否热门')->states($states)->default(0);
         $form->number('sort_order', __('Sort order'))->default(99);
         return $form;
     }

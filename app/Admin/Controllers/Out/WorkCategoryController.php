@@ -35,7 +35,7 @@ class WorkCategoryController extends AdminController
         $grid->column('id', __('Id'))->sortable();
         $grid->column('image', __('Image'))->image();
         $grid->column('name', __('名称'));
-        $grid->column('sort_order', __('Sort order'))->sortable();
+        $grid->column('sort_order', __('Sort order'))->sortable()->editable();
 
         return $grid;
     }
