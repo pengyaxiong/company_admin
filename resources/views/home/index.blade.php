@@ -278,7 +278,7 @@
                                 @if($loop->index>4 && $loop->index<14)
                                     <a class="indexNewsUlA" href="{{route('home.article',$article->id)}}">{{$article->title}}</a>
                                 @endif
-                                <a class="indexNewsUlAMore" href="{{route('home.articles')}}">查看更多 >></a>
+                                <a class="indexNewsUlAMore" href="{{route('home.articles',['id'=>$category->id])}}">查看更多 >></a>
                             </div>
                         </div>
                     @endforeach

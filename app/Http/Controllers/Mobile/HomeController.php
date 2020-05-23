@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Mobile;
 
+use App\Admin\Models\About\Company;
 use App\Admin\Models\About\Contact;
 use App\Admin\Models\Cms\Ads;
 use App\Admin\Models\Cms\Article;
@@ -18,7 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
+use App\Http\Controllers\Controller;
 class HomeController extends Controller
 {
     public function __construct()
@@ -27,8 +28,9 @@ class HomeController extends Controller
         $contacts = Contact::first();
 
         //广告
-        $ads = Ads::where('is_show', true)->where('type', true)->orderby('sort_order')->get();
+        $ads = Ads::where('is_show', true)->where('type', false)->orderby('sort_order')->get();
 
+        $company = Company::first();
 
         $zy_means = \App\Admin\Models\Cms\ArticleCategory::has('articles')->where('is_show', true)->orderby('sort_order', 'asc')->get();
 
@@ -41,12 +43,11 @@ class HomeController extends Controller
             }
         }
 
-        $nav='nav1';
         view()->share([
             'contacts' => $contacts,
             'zy_means' => $zy_means,
+            'company' => $company,
             'ads' => $ads,
-            'nav' => $nav,
             'search_keywords' => $search_keywords,
         ]);
 
@@ -71,7 +72,7 @@ class HomeController extends Controller
             $query->where('is_show', true)->orderBy('sort_order', 'asc');
         }])->orderby('sort_order', 'asc')->get();
 
-        return view('home.index', compact('sidles', 'banners', 'fields', 'hospitals', 'doctors', 'works', 'services', 'categories'));
+        return view('mobile.index', compact('sidles', 'banners', 'fields', 'hospitals', 'doctors', 'works', 'services', 'categories'));
     }
 
 
@@ -110,7 +111,7 @@ class HomeController extends Controller
             $query->where('is_show', true)->orderby('sort_order');
         }])->where('is_show', true)->where('parent_id', 0)->orderby('sort_order')->get();
 
-        return view('home.articles', compact('articles','category_name','know_means'));
+        return view('mobile.articles', compact('articles','category_name','know_means'));
     }
 
     public function article($id)
@@ -129,7 +130,7 @@ class HomeController extends Controller
         }])->where('is_show', true)->where('parent_id', 0)->orderby('sort_order')->get();
 
 
-        return view('home.article', compact('article','recommend_articles','know_means'));
+        return view('mobile.article', compact('article','recommend_articles','know_means'));
     }
 
     //生殖机构大全
@@ -145,8 +146,8 @@ class HomeController extends Controller
         ));
 
         $articles = Article::where('is_show', true)->where('is_recommend', true)->orderby('sort_order', 'asc')->limit(16)->get();
-        $nav='nav4';
-        return view('home.organizations', compact('organizations', 'articles','nav'));
+
+        return view('mobile.organizations', compact('organizations', 'articles'));
     }
 
     public function organization($id)
@@ -154,7 +155,7 @@ class HomeController extends Controller
         $organization = Organization::find($id);
 
         $articles = Article::where('is_show', true)->where('is_hot', true)->orderby('sort_order', 'asc')->limit(6)->get();
-        $nav='nav4';
-        return view('home.organization', compact('organization', 'articles','nav'));
+
+        return view('mobile.organization', compact('organization', 'articles'));
     }
 }

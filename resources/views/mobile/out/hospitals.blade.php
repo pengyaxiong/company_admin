@@ -1,4 +1,4 @@
-@extends('home.layouts.base')
+@extends('mobile.layouts.base')
 
 @section('title')
 
@@ -41,8 +41,8 @@
                     </div>
                     <div class="fr ohListers">
                         <div class="ohListImgs">
-                            @if(!empty($hospital->doctors))
-                                @foreach($hospital->doctors as $doctor)
+                            @if(!empty($hospital->doctor))
+                                @foreach($hospital->doctor as $doctor)
                                     <img src="{{\Storage::disk(config('admin.upload.disk'))->url($doctor['image'])}}">
                                 @endforeach
                             @endif
@@ -53,7 +53,7 @@
             </a>
         @endforeach
     <!-- 分页 -->
-        {!! $hospitals->appends(Request::all())->links('home.layouts._page') !!}
+        {!! $hospitals->appends(Request::all())->links('mobile.layouts._page') !!}
     </div>
     <!-- 相关推荐 -->
     <div class="relatedSuggestion">

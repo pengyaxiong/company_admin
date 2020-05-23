@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Mobile;
 
 use App\Admin\Models\Cms\Article;
 use App\Admin\Models\Cms\ArticleCategory;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Admin\Models\About\Contact;
 use App\Admin\Models\Cms\Ads;
-
+use App\Http\Controllers\Controller;
 class CmsController extends Controller
 {
     public function __construct()
@@ -21,7 +21,7 @@ class CmsController extends Controller
         $contacts = Contact::first();
 
         //广告
-        $ads=Ads::where('is_show', true)->where('type', true)->orderby('sort_order')->get();
+        $ads=Ads::where('is_show', true)->where('type', false)->orderby('sort_order')->get();
 
         $zy_means = \App\Admin\Models\Cms\ArticleCategory::has('articles')->where('is_show', true)->orderby('sort_order', 'asc')->get();
 
@@ -38,13 +38,12 @@ class CmsController extends Controller
                 $search_keywords[$k] = Cache::store('database')->get($keyword);
             }
         }
-        $nav='nav3';
+
         view()->share([
             'zy_means' => $zy_means,
             'contacts' => $contacts,
             'know_means' => $know_means,
             'ads' => $ads,
-            'nav' => $nav,
             'search_keywords' => $search_keywords,
         ]);
 
@@ -58,7 +57,7 @@ class CmsController extends Controller
 
         $today = Article::where('is_show', true)->where('is_today', true)->orderby('sort_order')->limit(9)->get();
 
-        return view('home.cms.article_categories', compact('categories', 'today'));
+        return view('mobile.cms.article_categories', compact('categories', 'today'));
     }
 
     public function today_articles(Request $request)
@@ -72,7 +71,7 @@ class CmsController extends Controller
             'page' => $page,
         ));
 
-        return view('home.cms.articles', compact('articles','category_name'));
+        return view('mobile.cms.articles', compact('articles','category_name'));
     }
 
     //试管专题文章
@@ -89,7 +88,7 @@ class CmsController extends Controller
             'page' => $page,
         ));
 
-        return view('home.cms.articles', compact('articles','category_name'));
+        return view('mobile.cms.articles', compact('articles','category_name'));
 
     }
 
@@ -104,7 +103,7 @@ class CmsController extends Controller
         $recommend_articles=Article::where('is_recommend', true)->where('category_id', $article->category_id)
             ->where('is_show', true)->orderby('sort_order')->limit(16)->get();
 
-        return view('home.cms.article', compact('article','recommend_articles'));
+        return view('mobile.cms.article', compact('article','recommend_articles'));
     }
 
     //知识百科文章
@@ -126,7 +125,7 @@ class CmsController extends Controller
         $cyclopedia = Know::where('is_show', true)->where('is_cyclopedia', true)->where('category_id', $id)->orderby('sort_order')->limit(6)->get();
 
 
-        return view('home.cms.knows', compact('recommend','category','cyclopedia','hot' ,'all_hot','all_new'));
+        return view('mobile.cms.knows', compact('recommend','category','cyclopedia','hot' ,'all_hot','all_new'));
 
     }
 
@@ -140,6 +139,6 @@ class CmsController extends Controller
         $article['prev_data'] = Know::where('sort_order','<=',$article->sort_order)->where('id','!=',$article->id)->first();
         $article['next_data'] = Know::where('sort_order','>=',$article->sort_order)->where('id','!=',$article->id)->first();
 
-        return view('home.cms.know', compact('article', 'recommend_articles'));
+        return view('mobile.cms.know', compact('article', 'recommend_articles'));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Mobile;
 
 use App\Admin\Models\About\Company;
 use App\Admin\Models\Cms\Ads;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Admin\Models\About\Contact;
-
+use App\Http\Controllers\Controller;
 class OutController extends Controller
 {
     public function __construct()
@@ -23,7 +23,7 @@ class OutController extends Controller
         $contacts = Contact::first();
         $company = Company::first();
         //广告
-        $ads = Ads::where('is_show', true)->where('type', true)->orderby('sort_order')->get();
+        $ads = Ads::where('is_show', true)->where('type', false)->orderby('sort_order')->get();
 
         $zy_means = \App\Admin\Models\Cms\ArticleCategory::has('articles')->where('is_show', true)->orderby('sort_order', 'asc')->get();
 
@@ -35,13 +35,12 @@ class OutController extends Controller
                 $search_keywords[$k] = Cache::store('database')->get($keyword);
             }
         }
-        $nav='nav2';
+
         view()->share([
             'contacts' => $contacts,
             'zy_means' => $zy_means,
             'company' => $company,
             'ads' => $ads,
-            'nav' => $nav,
             'search_keywords' => $search_keywords,
         ]);
     }
@@ -57,7 +56,7 @@ class OutController extends Controller
         ));
         $articles = Article::where('is_show', true)->where('is_recommend', true)->orderby('sort_order', 'asc')->limit(16)->get();
 
-        return view('home.out.hospitals', compact('hospitals', 'articles'));
+        return view('mobile.out.hospitals', compact('hospitals', 'articles'));
     }
 
     //海外医院详情
@@ -67,7 +66,7 @@ class OutController extends Controller
 
         $articles = Article::where('is_show', true)->where('is_hot', true)->orderby('sort_order', 'asc')->limit(6)->get();
 
-        return view('home.out.hospital', compact('hospital', 'articles'));
+        return view('mobile.out.hospital', compact('hospital', 'articles'));
     }
 
 
@@ -84,7 +83,7 @@ class OutController extends Controller
         $recommend_articles = Article::where('is_recommend', true)
             ->where('is_show', true)->orderby('sort_order')->limit(16)->get();
 
-        return view('home.out.doctors', compact('doctors', 'recommend_articles'));
+        return view('mobile.out.doctors', compact('doctors', 'recommend_articles'));
     }
 
     //名医荟萃详情
@@ -101,7 +100,7 @@ class OutController extends Controller
             'page' => $page,
         ));
 
-        return view('home.out.doctor', compact('doctor', 'all_hot', 'articles'));
+        return view('mobile.out.doctor', compact('doctor', 'all_hot', 'articles'));
     }
 
 
@@ -121,7 +120,7 @@ class OutController extends Controller
         $recommend_articles = Article::where('is_recommend', true)
             ->where('is_show', true)->orderby('sort_order')->limit(6)->get();
 
-        return view('home.out.articles', compact('articles', 'recommend_articles', 'hospitals'));
+        return view('mobile.out.articles', compact('articles', 'recommend_articles', 'hospitals'));
     }
 
     //试管套餐详情
@@ -140,7 +139,7 @@ class OutController extends Controller
         $article['prev_data'] = Article::where('sort_order', '<=', $article->sort_order)->where('id', '!=', $article->id)->first();
         $article['next_data'] = Article::where('sort_order', '>=', $article->sort_order)->where('id', '!=', $article->id)->first();
 
-        return view('home.out.article', compact('article', 'recommend_articles', 'hospitals', 'hot_articles'));
+        return view('mobile.out.article', compact('article', 'recommend_articles', 'hospitals', 'hot_articles'));
     }
 
     //成功案例
@@ -161,7 +160,7 @@ class OutController extends Controller
         $recommend_works = Work::where('is_recommend', true)
             ->where('is_show', true)->orderby('sort_order', 'asc')->limit(16)->get();
 
-        return view('home.out.works', compact('works', 'recommend_works','categories','category_id'));
+        return view('mobile.out.works', compact('works', 'recommend_works','categories','category_id'));
 
     }
 
@@ -181,7 +180,7 @@ class OutController extends Controller
             ->where('is_show', true)->orderby('sort_order')->limit(6)->get();
 
 
-        return view('home.out.work', compact('work', 'recommend_works', 'recommend_articles', 'hospitals'));
+        return view('mobile.out.work', compact('work', 'recommend_works', 'recommend_articles', 'hospitals'));
     }
 
 }

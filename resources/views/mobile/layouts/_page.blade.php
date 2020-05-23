@@ -34,4 +34,4 @@
 @endif
 
 
-{{--{!! $solutions->appends(Request::all())->links('home.layouts._page') !!}--}}
+{{--{!! $solutions->appends(Request::all())->links('mobile.layouts._page') !!}--}}

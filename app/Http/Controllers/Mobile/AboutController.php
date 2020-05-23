@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Mobile;
 
 use App\Admin\Models\About\Article;
 use App\Admin\Models\About\Company;
@@ -8,6 +8,7 @@ use App\Admin\Models\About\Contact;
 use App\Admin\Models\About\Job;
 use App\Admin\Models\About\Join;
 use App\Admin\Models\Cms\Ads;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,7 @@ class AboutController extends Controller
         $company = Company::first();
 
         //广告
-        $ads = Ads::where('is_show', true)->where('type', true)->orderby('sort_order')->get();
+        $ads = Ads::where('is_show', true)->where('type', false)->orderby('sort_order')->get();
 
         $zy_means = \App\Admin\Models\Cms\ArticleCategory::has('articles')->where('is_show', true)->orderby('sort_order', 'asc')->get();
 
@@ -37,12 +38,11 @@ class AboutController extends Controller
                 $search_keywords[$k] = Cache::store('database')->get($keyword);
             }
         }
-        $nav='nav6';
+
         view()->share([
             'zy_means' => $zy_means,
             'company' => $company,
             'contacts' => $contacts,
-            'nav' => $nav,
             'ads' => $ads,
             'search_keywords' => $search_keywords,
         ]);
@@ -59,7 +59,7 @@ class AboutController extends Controller
             'page' => $page,
         ));
 
-        return view('home.about.articles', compact('articles'));
+        return view('mobile.about.articles', compact('articles'));
     }
 
 
@@ -70,7 +70,7 @@ class AboutController extends Controller
         $article['prev_data']=Article::where('sort_order','<=',$article->sort_order)->where('id','!=',$article->id)->first();
         $article['next_data']=Article::where('sort_order','>=',$article->sort_order)->where('id','!=',$article->id)->first();
 
-        return view('home.about.article', compact('article'));
+        return view('mobile.about.article', compact('article'));
     }
 
 
@@ -78,12 +78,12 @@ class AboutController extends Controller
     {
 
 
-        return view('home.about.company');
+        return view('mobile.about.company');
     }
 
     public function join()
     {
-        return view('home.about.join');
+        return view('mobile.about.join');
     }
 
 
@@ -119,11 +119,11 @@ class AboutController extends Controller
     {
         $jobs = Job::where('is_show', true)->orderby('sort_order', 'asc')->get();
 
-        return view('home.about.job', compact('jobs'));
+        return view('mobile.about.job', compact('jobs'));
     }
 
     public function content()
     {
-        return view('home.about.content');
+        return view('mobile.about.content');
     }
 }
