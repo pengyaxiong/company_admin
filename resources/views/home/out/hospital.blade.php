@@ -50,7 +50,7 @@
             <div class="hospitalDocList clearfix">
                 @if(!empty($hospital->doctors))
                     @foreach($hospital->doctors as $doctor)
-                        <a class="hospitalDocLink" href="#">
+                        <a class="hospitalDocLink" href="{{route('out.doctor',$doctor->id)}}">
                             <div class="docItemTop clearfix">
                                 <img class="docItemImg fl" src="{{\Storage::disk(config('admin.upload.disk'))->url($doctor['image'])}}">
                                 <div class="docItemInfo fl">

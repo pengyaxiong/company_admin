@@ -9,6 +9,21 @@
     <script src="/home/js/idangerous.swiper.min.js" type="text/javascript" charset="utf-8"></script>
     <title>{{ config('app.name') }}</title>
     @yield('css')
+    <style>
+        .FootErweima{
+            margin-right: 0;
+            margin-left: 30px;
+        }
+        .footList{
+            padding: 0 50px;
+            width: 180px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .footListLast{
+            width: 300px;
+        }
+    </style>
 </head>
 <body>
 <!-- header -->

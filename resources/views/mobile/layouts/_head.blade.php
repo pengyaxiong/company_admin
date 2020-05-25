@@ -36,7 +36,7 @@
             </div>
         </a>
         <a href="{{route('mobile.organizations')}}">生殖机构大全</a>
-        <a href="">自营门诊</a>
+        <a href="{{$contacts->url}}">自营门诊</a>
         <a href="{{route('mobile.about.company')}}">关于我们</a>
     </div>
     <div class="menuAd">

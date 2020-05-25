@@ -22,7 +22,7 @@
         <a class="footListLink" href="{{route('about.job')}}">人才招聘</a>
         <a class="footListLink" href="{{route('about.content')}}">联系我们</a>
     </div>
-    <div class="footList">
+    <div class="footList footListLast">
         <div class="footListTitle">联系方式</div>
         <div class="footListLink">电话：{{$contacts->tel}} </div>
         <div class="footListLink">公式地址：{{$contacts->address}}</div>

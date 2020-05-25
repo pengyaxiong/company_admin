@@ -9,34 +9,26 @@
 @section('content')
 
     <img src="{{\Storage::disk(config('admin.upload.disk'))->url($company->image)}}" class="indexad">
-    <div class="companyProfileNav">
-        <div class="companyProfileNavBox">
-            <a href="{{route('about.company')}}">公司简介</a>
-            <a href="{{route('about.articles')}}">新闻资讯</a>
-            <a class="companyProfileNavOn" href="{{route('about.join')}}">加盟代理</a>
-            <a href="{{route('about.job')}}">人才招聘</a>
-            <a href="{{route('about.content')}}">联系我们</a>
-        </div>
+    <div class="successNav">
+        <div><a href="{{route('mobile.about.company')}}">公司简介</a></div>
+        <div><a href="{{route('mobile.about.articles')}}">新闻资讯</a></div>
+        <div class="successNavOn"><a href="{{route('mobile.about.join')}}">加盟代理</a></div>
+        <div><a href="{{route('mobile.about.job')}}">人才招聘</a></div>
+        <div><a href="{{route('mobile.about.content')}}">联系我们</a></div>
     </div>
 
-    <div class="franchiseAgent">
-        <div class="title">
-            <div class="titleEn">JOIN AGENT</div>
-            <div class="titleZn">代理招商</div>
-            <img src="/home/img/titleIcon.png" class="titleIcon">
-        </div>
-        <form id="join_us" action="{{route('about.join_us')}}" method="post">
-            <div class="clearfix">
-                <input class="yourName placeholder fl" type="text" id="name" name="name" placeholder="请输入您的姓名（必填）"/>
-                <input class="yourPhone placeholder fr" type="text" id="phone" name="phone"
-                       placeholder="请输入您的联系方式（必填）"/>
-            </div>
-            <input class="companyName placeholder" type="text" id="company" name="company" placeholder="请输入您的公司名称"/>
-            <textarea class="textarea placeholder" placeholder="备注" id="remark" name="remark"></textarea>
-            <div class="formTips">48小时内我们会有专人与你详细沟通</div>
-            <div class="submitBtn">提交申请</div>
-        </form>
+    <div class="title aboutTitle">
+        <div class="titleEn">JOIN AGENT</div>
+        <div class="titleZn">加盟代理</div>
+        <img src="/mobile/img/yellowArror.png" class="yellowArror" >
     </div>
+
+    <input class="yourName placeholder" type="text" id="name" name="name"  placeholder="请输入您的姓名（必填）"/>
+    <input class="yourPhone placeholder" type="text" id="phone" name="phone" placeholder="请输入您的联系方式（必填）" />
+    <input class="companyName placeholder" type="text" id="company" name="company"  placeholder="请输入您的公司名称" />
+    <textarea class="textarea placeholder" placeholder="备注" id="remark" name="remark"></textarea>
+    <div class="formTips">48小时内我们会有专人与你详细沟通</div>
+    <div class="submitBtn">提交申请</div>
 
 @endsection
 @section('js')
@@ -51,7 +43,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "{{route('about.join_us')}}",
+                    url: "{{route('mobile.about.join_us')}}",
                     data: {
                         name: name,
                         phone: phone,

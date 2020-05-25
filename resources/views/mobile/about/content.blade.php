@@ -9,49 +9,40 @@
 @section('content')
 
     <img src="{{\Storage::disk(config('admin.upload.disk'))->url($company->image)}}" class="indexad">
-    <div class="companyProfileNav">
-        <div class="companyProfileNavBox">
-            <a href="{{route('about.company')}}">公司简介</a>
-            <a href="{{route('about.articles')}}">新闻资讯</a>
-            <a href="{{route('about.join')}}">加盟代理</a>
-            <a href="{{route('about.job')}}">人才招聘</a>
-            <a class="companyProfileNavOn" href="{{route('about.content')}}">联系我们</a>
-        </div>
+    <div class="successNav">
+        <div><a href="{{route('mobile.about.company')}}">公司简介</a></div>
+        <div><a href="{{route('mobile.about.articles')}}">新闻资讯</a></div>
+        <div><a href="{{route('mobile.about.join')}}">加盟代理</a></div>
+        <div><a href="{{route('mobile.about.job')}}">人才招聘</a></div>
+        <div class="successNavOn"><a href="{{route('mobile.about.content')}}">联系我们</a></div>
     </div>
-    <div class="title ustitle">
+
+    <div class="title aboutTitle">
         <div class="titleEn">CONTACT US</div>
         <div class="titleZn">联系我们</div>
-        <img src="/home/img/titleIcon.png" class="titleIcon" >
+        <img src="/mobile/img/yellowArror.png" class="yellowArror">
     </div>
+
     <div class="mapBox">
-        <div id="allmap" style="height: 500px"></div>
-        <div class="mapInfo">
-            <div class="mapInfoTitle">{{$contacts->name}}</div>
-            <div class="mapInfoItem">
-                <img src="/home/img/m1.png" >
-                <div class="fl">
-                    {{$contacts->phone}}
-                </div>
-            </div>
-            <div class="mapInfoItem">
-                <img src="/home/img/m2.png" >
-                <div class="fl">
-                    {{$contacts->tel}}
-                </div>
-            </div>
-            <div class="mapInfoItem">
-                <img src="/home/img/m3.png" >
-                <div class="fl">
-                    {{$contacts->email}}
-                </div>
-            </div>
-            <div class="mapInfoItem">
-                <img src="/home/img/m4.png" >
-                <div class="fl">
-                    {{$contacts->address}}
-                </div>
-            </div>
-        </div>
+        <div id="allmap"></div>
+    </div>
+
+    <div class="cmpName">{{$contacts->name}}</div>
+    <div class="cmpItem">
+        <img src="/mobile/img/u1.png" >
+        {{$contacts->phone}}
+    </div>
+    <div class="cmpItem">
+        <img src="/mobile/img/u2.png" >
+        {{$contacts->tel}}
+    </div>
+    <div class="cmpItem">
+        <img src="/mobile/img/u3.png" >
+        {{$contacts->email}}
+    </div>
+    <div class="cmpItem cmpItemLats">
+        <img src="/mobile/img/u4.png" >
+        {{$contacts->address}}
     </div>
 
 @endsection
@@ -64,7 +55,7 @@
             //初始化地图
             var map = new TMap.Map("allmap", {
                 center: center,
-                zoom: 17
+                zoom: 16
             });
             //初始化marker
             var marker = new TMap.MultiMarker({
@@ -74,7 +65,7 @@
                     "marker": new TMap.MarkerStyle({
                         "width": 25,
                         "height": 35,
-                        "anchor": { x: 16, y: 32 },
+                        "anchor": {x: 16, y: 32},
                     })
                 },
                 geometries: [{ //点标注数据数组

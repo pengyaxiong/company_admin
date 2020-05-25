@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         'api/*',
-        'about/join_us'
+        'about/join_us',
+        '/mobile/about/join_us'
     ];
 }

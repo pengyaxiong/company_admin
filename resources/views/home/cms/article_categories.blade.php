@@ -52,7 +52,7 @@
 
                             <div class="fr advisoryRUl">
                                 @foreach($today as $article)
-                                    @if($loop->index>4 && $loop->index<8)
+                                    @if($loop->index>3 && $loop->index<7)
                                         <a href="{{route('cms.article',$article->id)}}">
                                             {{$article->title}}
                                         </a>

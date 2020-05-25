@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Admin\Models\About\Company;
 use App\Admin\Models\Cms\Article;
 use App\Admin\Models\Cms\ArticleCategory;
 use App\Admin\Models\Cms\Know;
@@ -39,11 +40,14 @@ class CmsController extends Controller
             }
         }
 
+        $company = Company::first();
+
         view()->share([
             'zy_means' => $zy_means,
             'contacts' => $contacts,
             'know_means' => $know_means,
             'ads' => $ads,
+            'company' => $company,
             'search_keywords' => $search_keywords,
         ]);
 
@@ -125,7 +129,16 @@ class CmsController extends Controller
         $cyclopedia = Know::where('is_show', true)->where('is_cyclopedia', true)->where('category_id', $id)->orderby('sort_order')->limit(6)->get();
 
 
-        return view('mobile.cms.knows', compact('recommend','category','cyclopedia','hot' ,'all_hot','all_new'));
+        $knows = Know::where('is_show', true)->orderby('sort_order', 'asc')->paginate(env('PAGE_SIZE'));
+
+
+        $page = isset($page) ? $request['page'] : 1;
+        $knows = $knows->appends(array(
+            'page' => $page,
+        ));
+
+
+        return view('mobile.cms.knows', compact('knows','recommend','category','cyclopedia','hot' ,'all_hot','all_new'));
 
     }
 

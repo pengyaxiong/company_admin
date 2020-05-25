@@ -14,6 +14,7 @@
     <script src="/mobile/js/jquery.mobile-events.min.js" type="text/javascript" charset="utf-8"></script>
     <title>{{ config('app.name') }}</title>
     @yield('css')
+
 </head>
 <body>
 <!-- header -->

@@ -10,13 +10,13 @@
 
     <!-- 面包屑导航 -->
     <div class="breadcrumbs">
-        <img src="/home/img/bicon.png">
-        <a href="{{route('home.index')}}">网站首页 </a>> <span>海外医生</span>
+        <img src="/mobile/img/bicon.png">
+        <a href="{{route('mobile.index')}}">网站首页 </a>> <span>海外医生</span>
     </div>
     <!-- 列表 -->
     <div class='famousDoctors'>
         @foreach($doctors as $doctor)
-            <a href="{{route('out.doctor',$doctor->id)}}" class='famousDoctorsLink'>
+            <a href="{{route('mobile.out.doctor',$doctor->id)}}" class='famousDoctorsLink'>
                 <img class="" src='{{\Storage::disk(config('admin.upload.disk'))->url($doctor->image)}}'>
                 <div class='famousDocName'>{{$doctor->name}}</div>
                 <div class='famousDocPos'>{{$doctor->job}}</div>
@@ -34,7 +34,7 @@
         <div class="relatedSuggestionTitle">相关推荐</div>
         <div class="relatedSuggestionCont">
             @foreach($recommend_articles as $article)
-                <a class="textOne" href="{{route('out.article',$article->id)}}">
+                <a class="textOne" href="{{route('mobile.out.article',$article->id)}}">
                     {{$article->title}}
                 </a>
             @endforeach
